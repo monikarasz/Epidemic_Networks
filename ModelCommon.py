@@ -2,7 +2,7 @@ import utils
 
 
 class ModelCommon:
-    def __init__(self, G, pos, size, healthy, infected, color_dict):
+    def __init__(self, G, pos, size, healthy, infected, color_dict, node_size=20, width=1.0):
         self.model_name = 'common'
         self.G = G
         self.pos = pos
@@ -11,6 +11,8 @@ class ModelCommon:
         self.healthy = healthy
         self.infected = infected
         self.run_time = 0
+        self.node_size = node_size
+        self.width = width
 
     def stop_condition(self):
         pass
@@ -23,16 +25,15 @@ class ModelCommon:
             self.evolve_one_node(i)
 
     def run_evolution(self):
-        time = 0
+        self.run_time = 0
         frames = []
         while not self.stop_condition():
             self.evolve_all()
             health_now = dict(self.G.nodes('health'))
             colors = [self.color_dict[health_now[x]] for x in health_now]
-            image = utils.draw_graph(self.G, self.pos, colors, self.model_name, f'step_{time}')
+            image = utils.draw_graph(self.G, self.pos, colors, self.model_name, f'step_{self.run_time}', self.node_size, self.width)
             frames.append(image)
-            time += 1
-        self.run_time = time
+            self.run_time += 1
         utils.make_gif(frames, self.model_name, 'graph_evolution')
 
     def get_run_time(self):

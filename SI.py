@@ -3,8 +3,8 @@ import numpy as np
 
 
 class SI(ModelCommon):
-    def __init__(self, G, pos, size, healthy, infected, color_dict, b):
-        super().__init__(G, pos, size, healthy, infected, color_dict)
+    def __init__(self, G, pos, size, healthy, infected, color_dict, b, node_size=20, width=1):
+        super().__init__(G, pos, size, healthy, infected, color_dict, node_size, width)
         self.model_name = 'SI'
         self.b = b
         self.n_infected = [len(infected)]

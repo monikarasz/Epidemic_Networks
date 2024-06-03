@@ -13,7 +13,7 @@ def get_graph_by_type(graph_type, size, params):
     if graph_type == 'nws':
         return nx.newman_watts_strogatz_graph(size, params['neighbors_connected'], params['prob_connection'])
     if graph_type == 'sf':
-        return nx.scale_free_graph(size)
+        return nx.powerlaw_cluster_graph(size, params['m'], params['p'])
 
 
 def new_graph(size, initial_infections, graph_type, params):
@@ -30,13 +30,13 @@ def new_graph(size, initial_infections, graph_type, params):
         return G, healthy, infected, pos
 
 
-def draw_graph(G, pos, colors, model_name, name):
+def draw_graph(G, pos, colors, model_name, name, node_size=20, width=1.0):
     steps_dir = 'plots/' + model_name + '/steps'
     if not os.path.exists(steps_dir):
         os.makedirs(steps_dir)
 
     fig, ax = plt.subplots()
-    nx.draw(G, pos, node_size=20, node_color=colors)
+    nx.draw(G, pos, node_size=node_size, width=width, node_color=colors)
     buf = io.BytesIO()
     plt.savefig(buf, format='png')
     plt.close(fig)

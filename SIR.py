@@ -3,8 +3,8 @@ import numpy as np
 
 
 class SIR(ModelCommon):
-    def __init__(self, G, pos, size, healthy, infected, color_dict, b, u):
-        super().__init__(G, pos, size, healthy, infected, color_dict)
+    def __init__(self, G, pos, size, healthy, infected, color_dict, b, u, node_size=20, width=1):
+        super().__init__(G, pos, size, healthy, infected, color_dict, node_size, width)
         self.model_name = 'SIR'
         self.b = b
         self.u = u
