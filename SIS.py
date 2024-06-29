@@ -17,6 +17,7 @@ class SIS(ModelCommon):
         self.n_targets = int(size*frac_im)#changed this
         #self.n_targets = max(size // max_steps, 1)
         self.max_steps = max_steps
+        self.immunize()#added this
 
     def stop_condition(self):
         return (len(self.n_infected) > 10 and np.average(self.n_infected[-10:]) < 1) or self.run_time > self.max_steps
@@ -45,10 +46,10 @@ class SIS(ModelCommon):
             self.G.nodes[target]['health'] = 3
             if target not in self.immunized:
                 self.immunized.append(target)
-                #if target in self.infected:
-                #    self.infected.remove(target)
-                #else:
-                #    self.healthy.remove(target)
+                if target in self.infected:
+                    self.infected.remove(target)
+                else:
+                    self.healthy.remove(target)
 
     def evolve_all(self):
         super().evolve_all()
