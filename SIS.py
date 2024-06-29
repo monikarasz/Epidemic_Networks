@@ -4,7 +4,7 @@ import numpy as np
 
 class SIS(ModelCommon):
     def __init__(self, G, pos, size, healthy, infected, color_dict, b, g, node_size=20, width=1,
-                 immunization=False, strategy=None, max_steps=100, model_name=None):
+                 immunization=False, strategy=None, max_steps=100, model_name=None, frac_im = 0.1):#added frac_im
         super().__init__(G, pos, size, healthy, infected, color_dict, node_size, width)
         self.model_name = 'SIS' if model_name is None else model_name
         self.b = b
@@ -14,7 +14,8 @@ class SIS(ModelCommon):
         self.strategy = strategy
         self.immunized = []
         self.n_immunized = [len(self.immunized)]
-        self.n_targets = max(size // max_steps, 1)
+        self.n_targets = int(size*frac_im)#changed this
+        #self.n_targets = max(size // max_steps, 1)
         self.max_steps = max_steps
 
     def stop_condition(self):
@@ -44,16 +45,16 @@ class SIS(ModelCommon):
             self.G.nodes[target]['health'] = 3
             if target not in self.immunized:
                 self.immunized.append(target)
-                if target in self.infected:
-                    self.infected.remove(target)
-                else:
-                    self.healthy.remove(target)
+                #if target in self.infected:
+                #    self.infected.remove(target)
+                #else:
+                #    self.healthy.remove(target)
 
     def evolve_all(self):
         super().evolve_all()
-        self.immunize()
+        #self.immunize()
         self.n_infected.append(len(self.infected))
-        self.n_immunized.append(len(self.immunized))
+        #self.n_immunized.append(len(self.immunized))
 
 
     def get_infected_history(self):
