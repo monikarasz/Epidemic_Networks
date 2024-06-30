@@ -13,6 +13,7 @@ class ModelCommon:
         self.run_time = 0
         self.node_size = node_size
         self.width = width
+        self.visualize = False
 
     def stop_condition(self):
         pass
@@ -29,12 +30,17 @@ class ModelCommon:
         frames = []
         while not self.stop_condition():
             self.evolve_all()
-            health_now = dict(self.G.nodes('health'))
-            colors = [self.color_dict[health_now[x]] for x in health_now]
-            image = utils.draw_graph(self.G, self.pos, colors, self.model_name, f'step_{self.run_time}', self.node_size, self.width)
-            frames.append(image)
+            if self.visualize:
+                health_now = dict(self.G.nodes('health'))
+                colors = [self.color_dict[health_now[x]] for x in health_now]
+                image = utils.draw_graph(self.G, self.pos, colors, self.model_name, f'step_{self.run_time}', self.node_size, self.width)
+                frames.append(image)
             self.run_time += 1
-        utils.make_gif(frames, self.model_name, 'graph_evolution')
+        if self.visualize:
+            utils.make_gif(frames, self.model_name, 'graph_evolution')
 
     def get_run_time(self):
         return self.run_time
+
+    def get_num_infected(self):
+        return len(self.infected)

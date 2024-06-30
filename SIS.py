@@ -1,10 +1,11 @@
 from ModelCommon import ModelCommon
 import numpy as np
+import random
 
 
 class SIS(ModelCommon):
     def __init__(self, G, pos, size, healthy, infected, color_dict, b, g, node_size=20, width=1,
-                 immunization=False, strategy=None, max_steps=100, model_name=None, frac_im = 0.1):#added frac_im
+                 immunization=False, strategy=None, max_steps=100, model_name=None, frac_im=0.1):#added frac_im
         super().__init__(G, pos, size, healthy, infected, color_dict, node_size, width)
         self.model_name = 'SIS' if model_name is None else model_name
         self.b = b
@@ -63,3 +64,10 @@ class SIS(ModelCommon):
 
     def get_immunization_history(self):
         return self.n_immunized
+
+    def infect_random(self, number_infected):
+        targets = random.sample(self.healthy, number_infected)
+        for target in targets:
+            self.G.nodes[target]['health'] = 1
+            self.infected.append(target)
+            self.healthy.remove(target)
